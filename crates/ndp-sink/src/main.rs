@@ -68,7 +68,7 @@ fn main() -> anyhow::Result<()> {
                 break;
             }
             MessageView::StateChanged(s) => {
-                if s.src().map(|s| s == pipeline).unwrap_or(false) {
+                if s.src().map(|s| s == &pipeline).unwrap_or(false) {
                      println!("Pipeline state changed from {:?} to {:?}", s.old(), s.current());
                 }
             }

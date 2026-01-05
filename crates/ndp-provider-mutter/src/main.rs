@@ -1,6 +1,7 @@
 use clap::Parser;
 use gstreamer as gst;
 use gstreamer::prelude::*;
+use futures::StreamExt;
 use std::net::ToSocketAddrs;
 use zbus::Connection;
 
