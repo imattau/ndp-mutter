@@ -1,0 +1,29 @@
+app-id: com.github.ndp_mutter.Sink
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+command: ndp-sink
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # For audio playback if we add it later
+  - --socket=pulseaudio 
+
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/ndp-sink/cargo
+
+modules:
+  - name: ndp-sink
+    buildsystem: simple
+    build-commands:
+      - cargo build --release -p ndp-sink
+      - install -D target/release/ndp-sink /app/bin/ndp-sink
+    sources:
+      - type: dir
+        path: ../

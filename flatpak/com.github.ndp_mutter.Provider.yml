@@ -1,0 +1,42 @@
+app-id: com.github.ndp_mutter.Provider
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+command: ndp-provider-mutter
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --filesystem=xdg-run/pipewire-0
+  - --device=dri
+  - --talk-name=org.gnome.Mutter.ScreenCast
+  - --talk-name=org.gnome.Mutter.RemoteDesktop
+  # Allow access to session bus to talk to Mutter
+  - --socket=session-bus
+
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/ndp-provider-mutter/cargo
+
+modules:
+  - name: ndp-provider-mutter
+    buildsystem: simple
+    build-commands:
+      - cargo build --release -p ndp-provider-mutter
+      - install -D target/release/ndp-provider-mutter /app/bin/ndp-provider-mutter
+    sources:
+      - type: dir
+        path: ../
+    # Note: In a strict build, we'd need a generated sources.json for crates.io deps.
+    # For this dev setup, we will rely on 'flatpak-builder --share=network' 
+    # and removing '--offline' in the build script override if needed, 
+    # OR we use the 'cargo-vendor' pattern. 
+    # For simplicity in this manifest, we assume the builder is run with network access
+    # and we remove --offline from the command above in the actual execution logic if needed,
+    # but 'simple' buildsystem is dumb. 
+    # A better way for simple "dev" flatpaks is to allow network.
+    # We will adjust the build-commands in the final file to NOT be --offline 
+    # so it works with the build script provided later.
