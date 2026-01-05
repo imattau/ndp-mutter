@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ndp-common",
+    "crates/ndp-control",
+    "crates/ndp-provider-mutter",
+    "crates/ndp-sink",
+    "crates/ndp-discovery",
+    "crates/ndp-uinput-helper",
+    "tools/ndp-inspect",
+]

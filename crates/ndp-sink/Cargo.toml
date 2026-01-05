@@ -1,0 +1,11 @@
+[package]
+name = "ndp-sink"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gstreamer = "0.21"
+gstreamer-video = "0.21"
+gstreamer-app = "0.21"
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
